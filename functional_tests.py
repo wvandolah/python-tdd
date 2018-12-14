@@ -16,7 +16,7 @@ class NewVisitorTest(unittest.TestCase):
     self.browser.get('http://localhost:8000')
     # check that titles says todo list
     self.assertIn('To-Do', self.browser.title)
-    header_text = self.browser.find_element_by_tag_name('h1').header_text
+    header_text = self.browser.find_element_by_tag_name('h1').text
     self.assertIn('To-Do', header_text)
 
     # able to see area to input todo
@@ -30,7 +30,10 @@ class NewVisitorTest(unittest.TestCase):
 
     table = self.browser.find_element_by_id('id_list_table')
     rows = table.find_elements_by_tag_name('tr')
-    self.assertTrue(any(row.text == '1: fix keyboard layout' for row in rows))
+    self.assertTrue(
+      any(row.text == '1: fix keyboard layout' for row in rows),
+      "New to-do item did not appear in table"
+    )
     # has the ability to add more todos
     # updates again after second todo
     # make data persiste across sessionsererer
