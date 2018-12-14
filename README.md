@@ -1,2 +1,2 @@
 # python-tdd
-on chapter 2
+on chapter 3
