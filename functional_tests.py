@@ -19,6 +19,7 @@ class NewVisitorTest(unittest.TestCase):
     header_text = self.browser.find_element_by_tag_name('h1').text
     self.assertIn('To-Do', header_text)
 
+
     # able to see area to input todo
     inputbox = self.browser.find_element_by_id('id_new_item')
     self.assertEqual(inputbox.get_attribute('placeholder'), 'Enter a to-do item')
@@ -30,11 +31,17 @@ class NewVisitorTest(unittest.TestCase):
 
     table = self.browser.find_element_by_id('id_list_table')
     rows = table.find_elements_by_tag_name('tr')
-    self.assertTrue(
-      any(row.text == '1: fix keyboard layout' for row in rows),
-      "New to-do item did not appear in table"
-    )
+    self.assertIn('1: fix keyboard layout', [row.text for row in rows])
+
     # has the ability to add more todos
+    inputbox = self.browser.find_element_by_id('id_new_item')
+    inputbox.send_keys('fix keyboard layout again')
+    inputbox.send_keys(Keys.ENTER)
+    time.sleep(1)
+    table = self.browser.find_element_by_id('id_list_table')
+    rows = table.find_elements_by_tag_name('tr')
+    self.assertIn('2: fix keyboard layout again', [row.text for row in rows])
+
     # updates again after second todo
     # make data persiste across sessionsererer
     self.fail("Finish the test!")
